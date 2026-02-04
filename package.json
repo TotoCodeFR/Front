@@ -1,13 +1,17 @@
 {
-  "name": "Front",
-  "version": "1.0.0",
-  "description": "Front is a suite for developers, by developers",
-  "license": "AGPL-3.0-or-later",
-  "author": "TotoCodeFR",
-  "main": "src/main.js",
-  "scripts": {
-    "test": "",
-    "start": "node ."
-  },
-  "devDependencies": {}
+    "name": "front",
+    "version": "1.0.0",
+    "description": "Front is a suite for developers, by developers",
+    "license": "AGPL-3.0-or-later",
+    "author": "TotoCodeFR",
+    "main": "src/main.js",
+    "scripts": {
+        "test": "",
+        "start": "node ."
+    },
+    "dependencies": {
+        "express": "^5.2.1"
+    },
+    "type": "module"
 }
+
