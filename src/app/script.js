@@ -1,15 +1,18 @@
 function hand_appButton(btn) {
-    btn.addEventListener(() => {
+    btn.addEventListener('click', () => {
         const appName = btn.id;
 
-        window.history.pushState(null, "", null);
-        location.pathname = '/app/' + appName;
-        console.log();
+        window.history.pushState(null, "", `/app/${appName}`);
+
+        location.reload();
     });
 }
 
 function setHand_appButton() {
-    Array.from(document.getElementById('apps').children).forEach((btn) => {
+    for (const btn of document.getElementById('apps').children) {
+        console.log(btn);
         hand_appButton(btn);
-    });
+    };
 }
+
+setHand_appButton();
