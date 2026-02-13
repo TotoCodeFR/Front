@@ -1,5 +1,10 @@
+import { getDopplerClient } from './utility/doppler.js';
+await getDopplerClient();
+import { getSupabaseClient } from './utility/supabase.js';
 import express from 'express';
 import { loadApps } from './utility/loader.js';
+
+const sb = getSupabaseClient();
 
 const app = express();
 
