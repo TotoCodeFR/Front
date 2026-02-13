@@ -17,10 +17,13 @@ export const loadApps = async (app) => {
             const mainPath = path.join(appDir, 'main.js');
             if (fs.existsSync(mainPath)) {
                 try {
+                    console.log(appName);
                     const { default: router } = await import(`../apps/${appName}/main.js`);
                     if (router) {
                         app.use(`/api/${appName}`, router);
                         console.log(`[Backend] Loaded API for: ${appName}`);
+                    } else {
+                        console.warn(`Backend for ${appName} doesn't have router`);
                     }
                 } catch (err) {
                     console.error(`Failed to load backend for ${appName}:`, err);

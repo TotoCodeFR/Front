@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth</title>
+    <base href="/app/auth/">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <main>
+        <div class="auth-container">
+            <h2>Signup</h2>
+            <form id="signup-form">
+                <label>
+                    Email
+                    <input type="email" id="signup-email" placeholder="Email" required>
+                </label>
+                <label>
+                    Password
+                    <input type="password" id="signup-password" placeholder="Password" required>
+                </label>
+                <button type="submit" class="primary">
+                    <span class="background"></span>
+                    <span class="text">Sign Up</span>
+                </button>
+            </form>
+            <p id="signup-message"></p>
+
+            <h2>Login</h2>
+            <form id="login-form">
+                <label>
+                    Email
+                    <input type="email" id="login-email" placeholder="Email" required>
+                </label>
+                <label>
+                    Password
+                    <input type="password" id="login-password" placeholder="Password" required>
+                </label>
+                <button type="submit" class="primary">
+                    <span class="background"></span>
+                    <span class="text">Log In</span>
+                </button>
+            </form>
+            <p id="login-message"></p>
+        </div>
+    </main>
+
+    <script src="./script.js" type="module"></script>
+</body>
+
+</html>
