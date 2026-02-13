@@ -1,0 +1,24 @@
+/* src/apps/auth/frontend/confirm/style.css */
+/* Minimal styling, primarily inherits from ../style.css and /style.css */
+
+.auth-container h2 {
+    margin-bottom: var(--padding-md);
+}
+
+#confirmation-message {
+    margin-bottom: var(--padding-md);
+}
+
+#login-link {
+    display: inline-block;
+    padding: var(--padding-sm) var(--padding-md);
+    background-color: var(--accent);
+    color: var(--text-inverted);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+#login-link:hover {
+    background-color: #536dfe; /* A slightly darker shade of accent */
+}

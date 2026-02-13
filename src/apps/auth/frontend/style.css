@@ -1,0 +1,55 @@
+.auth-container {
+    background-color: var(--bg-secondary);
+    padding: var(--padding-md);
+    border-radius: var(--radius-md);
+    border: solid 1px var(--border-main);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    margin: 20px auto; /* Center the container and add some top/bottom margin */
+}
+
+h2 {
+    color: var(--text-main);
+    margin-bottom: var(--padding-md);
+    font-size: 24px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Increased gap for better spacing */
+    margin-bottom: var(--padding-md);
+}
+
+label {
+    display: flex; /* Changed to flex for better alignment of label and input */
+    flex-direction: column;
+    text-align: left; /* Align label text to the left */
+    gap: 5px; /* Space between label text and input */
+}
+
+input[type="email"],
+input[type="password"] {
+    width: -webkit-fill-available; /* Make input fill available width */
+}
+
+button[type="submit"] {
+    margin-top: 10px; /* Add some space above the button */
+}
+
+p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--text-muted); /* Use muted text color for messages */
+}
+
+/* Specific styling for messages */
+p#signup-message.success, p#login-message.success {
+    color: green;
+}
+
+p#signup-message.error, p#login-message.error {
+    color: red;
+}
