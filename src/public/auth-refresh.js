@@ -1,0 +1,59 @@
+(function () {
+    /**
+     * Helper to retrieve a cookie by name.
+     */
+    const getCookie = (name) => {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    };
+
+    /**
+     * Calls the backend to refresh the access token using the refresh token.
+     */
+    const refreshSession = async () => {
+        const refreshToken = getCookie('sb-refresh-token');
+        if (!refreshToken) return;
+
+        try {
+            const response = await fetch('/api/auth/refresh', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ refresh_token: refreshToken }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Update cookies with new tokens
+                const maxAge = 60 * 60 * 24 * 7; // 1 week
+                document.cookie = `sb-access-token=${data.session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; Secure`;
+                document.cookie = `sb-refresh-token=${data.session.refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; Secure`;
+                console.debug('Session refreshed successfully.');
+            } else {
+                console.warn('Session refresh failed:', data.error);
+                // Optional: Redirect to login if the refresh token is invalid
+                // window.location.href = '/login';
+            }
+        } catch (error) {
+            console.error('Error refreshing session:', error);
+        }
+    };
+
+    // Initialize the refresh logic
+    const initAuthRefresh = () => {
+        // Check for a session and set up the refresh interval (e.g., every 45 minutes)
+        if (getCookie('sb-refresh-token')) {
+            setInterval(refreshSession, 45 * 60 * 1000);
+        }
+    };
+
+    // Run initialization when the DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAuthRefresh);
+    } else {
+        initAuthRefresh();
+    }
+})();

@@ -77,4 +77,33 @@ router.post('/confirm', async (req, res) => {
     }
 });
 
+router.post('/refresh', async (req, res) => {
+    const { refresh_token } = req.body;
+
+    if (!refresh_token) {
+        return res.status(400).json({ error: 'Refresh token is required' });
+    }
+
+    try {
+        const { data, error } = await sb.auth.refreshSession({ refresh_token });
+
+        if (error) {
+            console.error('[Auth] Refresh error: ', error);
+            return res.status(401).json({ error: 'Invalid or expired refresh token' });
+        }
+
+        if (!data.session) {
+            return res.status(401).json({ error: 'Session not found' });
+        }
+
+        return res.status(200).json({
+            session: data.session
+        });
+
+    } catch (err) {
+        console.error('[Auth] Unexpected error during token refresh:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 export default router;
