@@ -4,31 +4,32 @@ import { getDopplerClient } from './utility/doppler.ts';
 import { getSupabaseClient } from './utility/supabase.ts';
 import { loadApps } from './utility/loader.ts';
 
-// Initialize Doppler secrets
+// Doppler init
 await getDopplerClient();
 
 const app = new Hono();
 
-// Initialize Supabase (now that env vars are loaded from Doppler)
+// Supabase init
 try {
     getSupabaseClient();
-} catch (e) {
-    console.warn('Supabase client initialization skipped or failed during startup:', e.message);
+} catch (e: any) {
+    console.warn('Supabase client initialization skipped or failed during startup:', e?.message);
+    console.warn(e);
 }
 
-// Handle /app without trailing slash
+// Handle /app
 app.get('/app', (c) => c.redirect('/app/'));
 
-// Serve main app assets
-app.use('/app/*', serveStatic({ 
+// Serve assets
+app.use('/app/*', serveStatic({
     root: './src/app',
     rewriteRequestPath: (path) => path.replace(/^\/app/, '')
 }));
 
-// Serve public assets (mounted at root in original express setup)
+// Serve public assets to root
 app.use('/*', serveStatic({ root: './src/public' }));
 
-// Load dynamic apps
+// Load apps
 await loadApps(app);
 
 const port = parseInt(process.env.PORT || '3000');
