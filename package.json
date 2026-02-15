@@ -4,16 +4,21 @@
     "description": "Front is a suite for developers, by developers",
     "license": "AGPL-3.0-or-later",
     "author": "TotoCodeFR",
-    "main": "src/main.js",
+    "main": "src/main.ts",
     "scripts": {
-        "test": "",
-        "start": "node ."
+        "dev": "bun --watch src/main.ts",
+        "start": "bun src/main.ts"
     },
     "dependencies": {
         "@dopplerhq/node-sdk": "^1.3.0",
         "@supabase/supabase-js": "^2.95.3",
         "dotenv": "^17.2.4",
-        "express": "^5.2.1"
+        "express": "^5.2.1",
+        "hono": "^4.11.9"
     },
-    "type": "module"
+    "type": "module",
+    "devDependencies": {
+        "@types/node": "^25.2.3",
+        "bun-types": "^1.3.9"
+    }
 }

@@ -1,8 +1,8 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-let supabase = null;
+let supabase: SupabaseClient | null = null;
 
-export function getSupabaseClient() {
+export function getSupabaseClient(): SupabaseClient {
     if (!supabase) {
         const supabaseUrl = process.env.SUPABASE_URL;
         const supabaseKey = process.env.SUPABASE_KEY;
@@ -12,11 +12,9 @@ export function getSupabaseClient() {
         }
 
         supabase = createClient(supabaseUrl, supabaseKey, {
-            // optional config:
             auth: {
-                persistSession: false,  // depends on your needs
+                persistSession: false,
             },
-            // You can add other options here if needed
         });
     }
     return supabase;
