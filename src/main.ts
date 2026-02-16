@@ -26,11 +26,11 @@ app.use('/app/*', serveStatic({
     rewriteRequestPath: (path) => path.replace(/^\/app/, '')
 }));
 
-// Serve public assets to root
-app.use('/*', serveStatic({ root: './src/public' }));
-
 // Load apps
 await loadApps(app);
+
+// Serve public assets to root
+app.use('/*', serveStatic({ root: './src/public' }));
 
 const port = parseInt(process.env.PORT || '3000');
 
