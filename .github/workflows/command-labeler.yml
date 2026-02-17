@@ -7,7 +7,11 @@ on:
 jobs:
     add-label:
         # Run only for comments on PRs that contain the command
-        if: github.event.issue.pull_request && contains(github.event.comment.body, '/check-todos')
+        # and the author is a collaborator.
+        if: >
+            github.event.issue.pull_request &&
+            contains(github.event.comment.body, '/check-todos') &&
+            contains(fromJson('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association)
         runs-on: ubuntu-latest
         permissions:
             pull-requests: write # Permission to add labels
