@@ -42,7 +42,7 @@ projects.get('/get', async (c) => {
     const { data: { user }, error: authError } = await sb.auth.getUser(token);
 
     if (authError || !user) {
-        return c.json({ error: authError?.message || 'User not found or invalid token' }, 404);
+        return c.json({ error: authError?.message || 'User not found or invalid token' }, 403);
     }
     const userUUID = user.id;
 
