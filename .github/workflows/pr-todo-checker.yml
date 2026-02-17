@@ -15,6 +15,7 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             pull-requests: write # Needed to remove the label
+            statuses: write # Needed for the action to create commit statuses
 
         steps:
             - name: Checkout code
