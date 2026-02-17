@@ -1,0 +1,19 @@
+.project {
+    border: 1px solid var(--border-main);
+    background-color: var(--bg-main);
+    padding: var(--padding-md);
+    border-radius: var(--radius-md);
+    gap: 4px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: background-color 0.4s var(--ea-cubic);
+}
+
+.project > #projectName {
+    font-size: 20px;
+}
+
+.project:hover {
+    background-color: var(--bg-secondary);
+}
