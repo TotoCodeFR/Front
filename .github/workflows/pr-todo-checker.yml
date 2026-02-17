@@ -4,17 +4,36 @@ on:
     pull_request_review_comment:
         types: [edited, deleted]
     pull_request:
-        types: [opened, synchronize, reopened]
+        types: [opened, synchronize, reopened, labeled]
 
 jobs:
     find_todos:
+        # Only run for the original events or when the specific label is added
+        if: >
+            github.event.action != 'labeled' ||
+            github.event.label.name == 'run-todo-check'
         runs-on: ubuntu-latest
+        permissions:
+            pull-requests: write # Needed to remove the label
 
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
 
             - name: Check for Todos
-              uses: phntmxyz/pr_todo_checker@v1
+              uses: phntmxyz/pr_todo_checker@v1.1.7
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Remove label after check
+              if: success() && github.event.action == 'labeled' && github.event.label.name == 'run-todo-check'
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      github.rest.issues.removeLabel({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: context.issue.number,
+                        name: 'run-todo-check'
+                      })
+              continue-on-error: true # Don't fail the workflow if label removal fails
