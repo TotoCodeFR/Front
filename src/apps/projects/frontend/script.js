@@ -15,8 +15,8 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-function getProjects() {
-    const req = fetch(`/api/projects/get?userUUID=${userUUID}`, {
+async function getProjects() {
+    const req = await fetch(`/api/projects/get?userUUID=${userUUID}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -24,7 +24,15 @@ function getProjects() {
         }
     });
 
-    const res = req.then(res => res.json());
+    if (!req.ok) {
+        if (req.status === 403) {
+            window.location.replace('/app/auth');
+        } else {
+            throw new Error(req.statusText);
+        }
+    }
+
+    const res = await req.json();
 
     return res;
 }

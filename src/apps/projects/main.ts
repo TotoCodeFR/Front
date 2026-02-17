@@ -52,9 +52,9 @@ projects.get('/get', async (c) => {
 
     const projectsResult = await util.get({
         owner: userUUID,
-        name: projectName as string | null,
-        repo: projectRepo as string | null,
-        id: projectUUID ? projectUUID : null
+        name: projectName || null,
+        repo: projectRepo || null,
+        id: projectUUID || null
     });
 
     if (!Array.isArray(projectsResult)) {

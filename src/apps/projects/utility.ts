@@ -29,9 +29,7 @@ async function get(searchCriteria: ProjectSearchCriteria): Promise<Project[] | P
     // Get all projects by a specific user
     let query = sb.from('projects').select<`*`, Project>('*');
 
-    if (searchCriteria.owner) {
-        query = query.eq('owner', searchCriteria.owner);
-    }
+    query = query.eq('owner', searchCriteria.owner);
     if (searchCriteria.name) {
         query = query.eq('name', searchCriteria.name);
     }

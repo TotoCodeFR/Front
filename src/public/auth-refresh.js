@@ -9,6 +9,21 @@
     };
 
     /**
+     * Helper to check if the JWT token is expired.
+     */
+    const isTokenExpired = (token) => {
+        if (!token) return true;
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const payload = JSON.parse(atob(base64));
+            return (Date.now() / 1000) > (payload.exp - 10); // 10s buffer
+        } catch (e) {
+            return true;
+        }
+    };
+
+    /**
      * Calls the backend to refresh the access token using the refresh token.
      */
     const refreshSession = async () => {
@@ -35,7 +50,7 @@
             } else {
                 console.warn('Session refresh failed:', data.error);
                 // Optional: Redirect to login if the refresh token is invalid
-                // window.location.href = '/login';
+                window.location.href = '/login';
             }
         } catch (error) {
             console.error('Error refreshing session:', error);
@@ -44,8 +59,12 @@
 
     // Initialize the refresh logic
     const initAuthRefresh = () => {
-        // Check for a session and set up the refresh interval (e.g., every 45 minutes)
-        if (getCookie('sb-refresh-token')) {
+        const refreshToken = getCookie('sb-refresh-token');
+        if (refreshToken) {
+            const accessToken = getCookie('sb-access-token');
+            if (isTokenExpired(accessToken)) {
+                refreshSession();
+            }
             setInterval(refreshSession, 45 * 60 * 1000);
         }
     };
