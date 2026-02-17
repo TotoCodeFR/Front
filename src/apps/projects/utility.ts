@@ -1,21 +1,21 @@
-import { UUID } from "node:crypto";
 import { getSupabaseClient } from "../../utility/supabase.ts";
+import { PostgrestError } from "@supabase/supabase-js";
 
 type URL = string;
 
 export type ProjectSearchCriteria = {
-    owner: UUID;
-    name: string | null;
-    repo: URL | null;
-    id: UUID | null;
+    owner: string;
+    name?: string | null;
+    repo?: URL | null;
+    id: string | null;
 };
 
 export type Project = {
-    id: UUID;
+    id: string;
     name: string;
     repo: URL;
-    owner: UUID;
-    created_at: Date;
+    owner: string;
+    created_at: string;
 };
 
 const sb = getSupabaseClient();
@@ -25,9 +25,9 @@ const sb = getSupabaseClient();
 */
 
 // Get all projects from a user
-async function get(searchCriteria: ProjectSearchCriteria) {
+async function get(searchCriteria: ProjectSearchCriteria): Promise<Project[] | PostgrestError> {
     // Get all projects by a specific user
-    let query = sb.from('projects').select('*');
+    let query = sb.from('projects').select<`*`, Project>('*');
 
     if (searchCriteria.owner) {
         query = query.eq('owner', searchCriteria.owner);
@@ -49,11 +49,11 @@ async function get(searchCriteria: ProjectSearchCriteria) {
     }
 
     // Returns data
-    return data;
+    return data || [];
 }
 
 // Create a new project
-async function create(userUUID: UUID, projectName: string, projectRepo: URL) {
+async function create(userUUID: string, projectName: string, projectRepo: URL): Promise<Project[] | PostgrestError> {
     // Create the project in the `projects` table
     const { data, error } = await sb
         .from('projects')
@@ -62,18 +62,18 @@ async function create(userUUID: UUID, projectName: string, projectRepo: URL) {
             repo: projectRepo,
             owner: userUUID
         })
-        .select();
+        .select<`*`, Project>('*');
 
     if (error) {
         return error;
     }
 
     // Returns data
-    return data;
+    return data || [];
 }
 
 // Edit a project
-async function edit(projectUUID: UUID, projectName: string, projectRepo: URL) {
+async function edit(projectUUID: string, projectName: string, projectRepo: URL): Promise<Project[] | PostgrestError> {
     // Edit the project in the `projects` table
     const { data, error } = await sb
         .from('projects')
@@ -82,31 +82,31 @@ async function edit(projectUUID: UUID, projectName: string, projectRepo: URL) {
             repo: projectRepo
         })
         .eq('id', projectUUID)
-        .select();
+        .select<`*`, Project>('*');
 
     if (error) {
         return error;
     }
 
     // Returns data
-    return data;
+    return data || [];
 }
 
 // Delete a project
-async function deleteP(projectUUID: UUID) {
+async function deleteP(projectUUID: string): Promise<Project[] | PostgrestError> {
     // Delete the project from the `projects` table
     const { data, error } = await sb
         .from('projects')
         .delete()
         .eq('id', projectUUID)
-        .select();
+        .select<`*`, Project>('*');
 
     if (error) {
         return error;
     }
 
     // Returns data
-    return data;
+    return data || [];
 }
 
 export default { get, create, edit, delete: deleteP };
