@@ -43,7 +43,7 @@
 
             if (response.ok) {
                 // Update cookies with new tokens
-                const maxAge = 60 * 60 * 24 * 7; // 1 week
+                const maxAge = data.session.expires_in; // 1 hour
                 document.cookie = `sb-access-token=${data.session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; Secure`;
                 document.cookie = `sb-refresh-token=${data.session.refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; Secure`;
                 console.debug('Session refreshed successfully.');
